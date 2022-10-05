@@ -114,15 +114,15 @@
           </div>
         </div>
         <div class="row">
-         {% for index in range(6) %}
+         {% for vine in vines %}
           <div class="col-lg-4 mb-5 col-md-6">
             <div class="wine_v_1 text-center pb-4 pt-5">
-              <img src="images/izabella.png" alt="Image" class="img-fluid">
+              <img src="images/{{ vine.get('Картинка') }}" alt="Image" class="img-fluid">
               <div>
-                <h3 class="heading mt-3 mb-3 text-dark">Изабелла</h3>
+                <h3 class="heading mt-3 mb-3 text-dark">{{ vine.get('Название') }}</h3>
                 <p>
                   Сорт винограда - Изабелла<br/>
-                  <span class="price">350 р.</span>
+                  <span class="price">{{ vine.get('Цена') }} р.</span>
                 </p>
               </div>
             </div>

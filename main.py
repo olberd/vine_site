@@ -6,6 +6,7 @@
 from datetime import date, timedelta
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
+import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
@@ -26,6 +27,10 @@ def year_ending(year):
     return year_end[year]
 
 
+exel_data_df = pandas.read_excel('wine.xlsx', sheet_name='Лист1', na_values=['N/A', 'NA'], keep_default_na=False)
+vines = exel_data_df.to_dict(orient='records')
+print(vines)
+
 env = Environment(
     loader=FileSystemLoader('.'),
     autoescape=select_autoescape(['html', 'xml'])
@@ -36,6 +41,7 @@ template = env.get_template('template.html')
 rendered_page = template.render(
     years_with_you=years_with_you(),
     year_ending=year_ending(years_with_you()),
+    vines=vines,
 
 )
 
