@@ -27,12 +27,6 @@ def year_ending(year):
 exel_data_df = pandas.read_excel('wine2.xlsx', sheet_name='Лист1', na_values=['N/A', 'NA'], keep_default_na=False)
 vines = exel_data_df.to_dict(orient='records')
 
-# category = exel_data_df.groupby('Категория')
-# vines_in_category = {}
-# for name, groups in category:
-#     vines_in_category[name] = groups.to_dict(orient='records')
-# pprint.pprint(vines_in_category, indent=2)
-
 vines_by_categories = collections.defaultdict(list)
 for vine in vines:
     vines_by_categories[vine['Категория']].append(vine)
