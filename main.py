@@ -43,7 +43,6 @@ template = env.get_template('template.html')
 rendered_page = template.render(
     years_with_you=years_with_you(),
     year_ending=year_ending(years_with_you()),
-    # vines=vines,
     vines=vines_by_categories.items(),
 
 )
