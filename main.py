@@ -24,11 +24,11 @@ def year_ending(year):
 
 
 exel_data_df = pandas.read_excel('wine.xlsx', sheet_name='Лист1', na_values=['N/A', 'NA'], keep_default_na=False)
-vines = exel_data_df.to_dict(orient='records')
+wines = exel_data_df.to_dict(orient='records')
 
-vines_by_categories = collections.defaultdict(list)
-for vine in vines:
-    vines_by_categories[vine['Категория']].append(vine)
+wines_by_categories = collections.defaultdict(list)
+for wine in wines:
+    wines_by_categories[wine['Категория']].append(wine)
 
 env = Environment(
     loader=FileSystemLoader('.'),
@@ -40,7 +40,7 @@ template = env.get_template('template.html')
 rendered_page = template.render(
     years_with_you=years_with_you(),
     year_ending=year_ending(years_with_you()),
-    vines=vines_by_categories.items(),
+    wines=wines_by_categories.items(),
 
 )
 
