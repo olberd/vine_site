@@ -8,9 +8,8 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def years_with_you():
-    year_now = date.today()
     year_from = date(year=1920, month=1, day=1)
-    return (year_now - year_from) // timedelta(days=365.2425)
+    return (date.today() - year_from) // timedelta(days=365.2425)
 
 
 def year_ending(year):
