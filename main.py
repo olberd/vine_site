@@ -30,8 +30,6 @@ vines = exel_data_df.to_dict(orient='records')
 vines_by_categories = collections.defaultdict(list)
 for vine in vines:
     vines_by_categories[vine['Категория']].append(vine)
-pprint.pprint(vines_by_categories)
-
 
 env = Environment(
     loader=FileSystemLoader('.'),
