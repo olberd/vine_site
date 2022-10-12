@@ -1,4 +1,4 @@
-import pprint
+import argparse
 import collections
 from datetime import date, timedelta
 from http.server import HTTPServer, SimpleHTTPRequestHandler
@@ -23,29 +23,40 @@ def year_ending(year):
     return year_end[year]
 
 
-exel_data_df = pandas.read_excel('wine.xlsx', sheet_name='Лист1', na_values=['N/A', 'NA'], keep_default_na=False)
-wines = exel_data_df.to_dict(orient='records')
+def get_wines_by_categories():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--file', '-f', default='wine.xlsx', help='Выберите файл excel с данными')
+    wine_file = parser.parse_args()
+    exel_data_df = pandas.read_excel(wine_file.file, sheet_name='Лист1', na_values=['N/A', 'NA'], keep_default_na=False)
+    wines = exel_data_df.to_dict(orient='records')
 
-wines_by_categories = collections.defaultdict(list)
-for wine in wines:
-    wines_by_categories[wine['Категория']].append(wine)
+    wines_by_categories = collections.defaultdict(list)
+    for wine in wines:
+        wines_by_categories[wine['Категория']].append(wine)
+    return wines_by_categories.items()
 
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-)
 
-template = env.get_template('template.html')
+def main():
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
 
-rendered_page = template.render(
-    years_with_you=years_with_you(),
-    year_ending=year_ending(years_with_you()),
-    wines=wines_by_categories.items(),
+    template = env.get_template('template.html')
 
-)
+    rendered_page = template.render(
+        years_with_you=years_with_you(),
+        year_ending=year_ending(years_with_you()),
+        wines=get_wines_by_categories(),
 
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    )
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
+
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
+
+if __name__ == '__main__':
+    main()
