@@ -7,12 +7,12 @@ import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-def years_with_you():
+def count_years_with_you():
     year_from = date(year=1920, month=1, day=1)
     return (date.today() - year_from) // timedelta(days=365.2425)
 
 
-def year_ending(year):
+def add_year_word(year):
     year_end = ['год', 'года', 'лет']
     if year % 10 == 1 and year % 100 != 11:
         year = 0
@@ -45,8 +45,8 @@ def main():
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        years_with_you=years_with_you(),
-        year_ending=year_ending(years_with_you()),
+        years_with_you=count_years_with_you(),
+        year_ending=add_year_word(count_years_with_you()),
         wines=get_wines_by_categories(),
 
     )
