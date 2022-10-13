@@ -1,18 +1,14 @@
 import argparse
 import collections
-from datetime import date, timedelta
+from datetime import date
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-def count_years_with_you():
-    year_from = date(year=1920, month=1, day=1)
-    return (date.today() - year_from) // timedelta(days=365.2425)
-
-
-def add_year_word(year):
+def count_winery_age():
+    year = date.today().year - 1920
     year_end = ['год', 'года', 'лет']
     if year % 10 == 1 and year % 100 != 11:
         year = 0
@@ -20,7 +16,7 @@ def add_year_word(year):
         year = 1
     else:
         year = 2
-    return year_end[year]
+    return f'{date.today().year - 1920} {year_end[year]}'
 
 
 def get_wines_by_categories():
@@ -43,12 +39,9 @@ def main():
     )
 
     template = env.get_template('template.html')
-
     rendered_page = template.render(
-        years_with_you=count_years_with_you(),
-        year_ending=add_year_word(count_years_with_you()),
+        winery_age=count_winery_age(),
         wines=get_wines_by_categories(),
-
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
