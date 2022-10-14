@@ -8,15 +8,15 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
 def count_winery_age():
-    year = date.today().year - 1920
-    year_end = ['год', 'года', 'лет']
-    if year % 10 == 1 and year % 100 != 11:
-        year = 0
-    elif 2 <= year % 10 <= 4 and (year % 100 < 10 or year % 100 >= 20):
-        year = 1
+    foundation_year = 1920
+    winery_age = date.today().year - foundation_year
+    if winery_age % 10 == 1 and winery_age % 100 != 11:
+        year_ending = 'год'
+    elif 2 <= winery_age % 10 <= 4 and (winery_age % 100 < 10 or winery_age % 100 >= 20):
+        year_ending = 'года'
     else:
-        year = 2
-    return f'{date.today().year - 1920} {year_end[year]}'
+        year_ending = 'лет'
+    return f'{winery_age} {year_ending}'
 
 
 def get_wines_by_categories():
